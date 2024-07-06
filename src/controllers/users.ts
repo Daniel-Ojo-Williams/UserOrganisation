@@ -44,7 +44,7 @@ class Users {
       // @ts-ignore
       delete user.password;
 
-      res.status(HttpCode.CREATED).json({ status: 'success', message: 'Registration successful', accessToken: token, user });
+      res.status(HttpCode.OK).json({ status: 'success', message: 'Registration successful', accessToken: token, user, statusCode: HttpCode.OK });
     } catch (error) {
       if (error instanceof CustomError) return res.status(error.status_code).json({ message: error.message, status: error.status, statusCode: error.status_code });
 
