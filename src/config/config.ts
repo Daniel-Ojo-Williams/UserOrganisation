@@ -1,9 +1,13 @@
+import path from 'path';
 import { ENV, ENVCONFIG } from '../types';
-import 'dotenv/config';
+import dotenv from 'dotenv';
+dotenv.config({ path: path.resolve(`${__dirname}/../../.env`) });
 
 const getConfig = (): ENV => {
   return {
-    JWT_SECRET: process.env.JWT_SECRET
+    JWT_SECRET: process.env.JWT_SECRET,
+    DB_STRING: process.env.DB_STRING,
+    ENVIRONMENT: process.env.ENVIRONMENT
   };
 };
 
