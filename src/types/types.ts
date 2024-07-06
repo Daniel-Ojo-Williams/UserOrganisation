@@ -6,8 +6,9 @@ declare global {
 
 export interface ENV {
   JWT_SECRET?: string;
-  DB_STRING?: string;
+  DATABASE_URL?: string;
   ENVIRONMENT?: string;
+  PORT?: string;
 }
 
 export type ENVCONFIG = Required<ENV>;
