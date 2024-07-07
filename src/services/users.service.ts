@@ -53,6 +53,8 @@ class UserService implements IUserService {
 
     if (!user) throw new CustomError(HttpCode.NOT_FOUND, "User not found", 'Not Found');
 
+    // @ts-ignore
+    delete user.password;
     return user;
   }
 }
