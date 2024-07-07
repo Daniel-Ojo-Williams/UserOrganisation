@@ -7,7 +7,7 @@ export const authMid = (req: Request, res: Response, next: NextFunction) => {
   try {
     const token = req.headers['authorization']?.split('Bearer ')[1].trim() as string;
 
-    if (!token) return res.status(HttpCode.UNAUTHORISED).json({ error: true, message: 'Invalid token, please login again' });
+    if (!token) return res.status(HttpCode.UNAUTHORISED).json({ status: 'Authentication failed', message: 'Authentication failed, please login again' });
 
     const user = decodeToken<User>(token);
     req.user = user;
