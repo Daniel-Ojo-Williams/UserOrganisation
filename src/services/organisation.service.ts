@@ -1,6 +1,6 @@
 import { prisma } from "../config";
 import { IOrganisation } from "../types";
-import { CustomError, HttpCode } from "../utils";
+import { CustomError, HttpCode, genId } from "../utils";
 
 class OrganisationService implements IOrganisation {
   async getUserRecord(profileUser: string, loggedInUser: string) {
@@ -37,7 +37,7 @@ class OrganisationService implements IOrganisation {
 
   async getUserOrganisations(userId: string) {
     const organisation = await prisma.organisation.findMany({
-      where: { users: { every: { userId  }  } }
+      where: { users: { some: { user: { userId } } } }
     });
 
     return organisation;
@@ -51,6 +51,34 @@ class OrganisationService implements IOrganisation {
     if (!organisation) throw new CustomError(HttpCode.NOT_FOUND, 'Organisation not found', 'Not Found');
 
     return organisation;
+  }
+
+  async createOrganisation(userId: string, name: string, description?: string) {
+    const organisation = await prisma.organisation.create({
+      data: {
+        name,
+        description,
+        orgId: genId(),
+        users: {
+          create: [{ user: { connect: { userId } } }],
+        },
+      },
+    });
+
+    return organisation;
+  }
+
+  async addUserToOrg(userId:string, orgId: string) {
+    const user = await prisma.userOrganisation.findFirst({ where: { userId } });
+
+    if (user) throw new CustomError(HttpCode.CONFLICT, 'User is already a member of this organisation', 'Already a member');
+
+    await prisma.userOrganisation.create({
+      data: {
+        orgId,
+        userId
+      }
+    })
   }
 }
 
