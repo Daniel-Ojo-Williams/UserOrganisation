@@ -54,7 +54,11 @@ class Users {
     } catch (error) {
       if (error instanceof CustomError) return res.status(error.status_code).json({ message: error.message, status: error.status, statusCode: error.status_code });
 
-      res.status(HttpCode.BAD_REQUEST).json({ message: 'Authentication unsuccessful', status: 'Bad request' })
+      res.status(HttpCode.INTERNAL_SERVER_ERROR).json({
+        message: "Something went wrong",
+        status: "Server error",
+        serverMessage: (error as Error).message,
+      });
     }
   }
 
@@ -68,7 +72,11 @@ class Users {
     } catch (error) {
       if (error instanceof CustomError) return res.status(error.status_code).json({ message: error.message, status: error.status, statusCode: error.status_code });
 
-      res.status(HttpCode.BAD_REQUEST).json({ message: 'Authentication unsuccessful', status: 'Bad request' })
+      res.status(HttpCode.INTERNAL_SERVER_ERROR).json({
+        message: "Something went wrong",
+        status: "Server error",
+        serverMessage: (error as Error).message,
+      });
     }
   }
 }
