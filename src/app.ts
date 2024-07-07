@@ -2,7 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import { config } from './config';
-import { UserRoutes } from './routes';
+import { OrgRoutes, UserRoutes } from './routes';
 
 const app = express();
 app.use(express.json());
@@ -11,6 +11,7 @@ app.use(helmet());
 
 
 app.use('/auth', UserRoutes);
+app.use('/api', OrgRoutes);
 
 
 const PORT = config.PORT;
