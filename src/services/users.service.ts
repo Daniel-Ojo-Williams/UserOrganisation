@@ -9,7 +9,7 @@ class UserService implements IUserService {
       where: { email: user.email }
     });
 
-    if (existingUser) throw new CustomError(HttpCode.CONFLICT, 'An account with this email already exists', 'Conflict');
+    if (existingUser) throw new CustomError(HttpCode.UNPROCESSABLE_ENTITY, 'An account with this email already exists', 'Conflict');
 
     const capitaliseName = user.firstName[0].toUpperCase() + user.firstName.slice(1);
     const orgName = `${capitaliseName}'${user.firstName[user.firstName.length - 1] === 's' ? '' : 's'} organisation`;
