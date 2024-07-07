@@ -21,7 +21,13 @@ class Users {
       // @ts-ignore
       delete newUser.password;
 
-      res.status(HttpCode.CREATED).json({ status: 'success', message: 'Registration successful', accessToken: token, user: newUser })
+      res
+        .status(HttpCode.CREATED)
+        .json({
+          status: "success",
+          message: "Registration successful",
+          data: { accessToken: token, user: newUser },
+        });
     } catch (error) {
       if (error instanceof CustomError) return res.status(error.status_code).json({ message: error.message, status: error.status, statusCode: error.status_code })
 
@@ -44,7 +50,21 @@ class Users {
       // @ts-ignore
       delete user.password;
 
-      res.status(HttpCode.OK).json({ status: 'success', message: 'Registration successful', accessToken: token, user, statusCode: HttpCode.OK });
+      res.status(HttpCode.OK).json({ status: 'success', message: 'Registration successful', data: { accessToken: token, user, statusCode: HttpCode.OK } });
+    } catch (error) {
+      if (error instanceof CustomError) return res.status(error.status_code).json({ message: error.message, status: error.status, statusCode: error.status_code });
+
+      res.status(HttpCode.BAD_REQUEST).json({ message: 'Authentication unsuccessful', status: 'Bad request' })
+    }
+  }
+
+  async getUserProfile(req: Request, res: Response) {
+    try {
+      const { userId } = req.user;
+
+      const user = await this.UserService.getUserById(userId);
+
+      res.status(HttpCode.OK).json({ status: 'success', message: 'Registration successful', data: { user }, statusCode: HttpCode.OK });      
     } catch (error) {
       if (error instanceof CustomError) return res.status(error.status_code).json({ message: error.message, status: error.status, statusCode: error.status_code });
 
