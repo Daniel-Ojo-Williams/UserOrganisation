@@ -8,7 +8,7 @@ describe('Token Tests', () => {
   const expiresIn = '5h';
   const token = genToken(payload, expiresIn);
 
-  test('TokenExpiredError', () => {
+  it('Should throw TokenExpiredError', () => {
     // --| jsonwebtoken uses the underlying Date Object to verify tokens, as such, manipulating the Date Object would affect the result by jsonwebtoken when verifying
     // --| Move the system time by 10 hours (simulates 10hours has gone by after setting the token)
     jest.useFakeTimers().advanceTimersByTime(10 * 60 * 60 * 1000);
@@ -23,7 +23,7 @@ describe('Token Tests', () => {
     jest.useRealTimers();
   });
 
-  test('Correct user details is found in token', () => {
+  it('Should return correct user details in token', () => {
     const result = decodeToken<payload>(token);
     // --| Checks if every property in the original payload is present in the decoded payload
     expect(Object.keys(payload).every(key => payload[key] === result[key])).toBeTruthy();
