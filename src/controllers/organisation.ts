@@ -31,6 +31,7 @@ class Organisation {
         });
     }
   }
+
   async getUserOrganisaions(req: Request, res: Response) {
     try {
       const { userId } = req.user;
@@ -38,6 +39,32 @@ class Organisation {
       const organisations = await this.OrganisationService.getUserOrganisations(userId);
 
       res.status(HttpCode.OK).json({ status: 'success', message: 'Fetched user organisations successfuly', data: { organisations } });
+    } catch (error) {
+      if (error instanceof CustomError)
+        return res
+          .status(error.status_code)
+          .json({
+            message: error.message,
+            status: error.status,
+            statusCode: error.status_code,
+          });
+
+      res
+        .status(HttpCode.BAD_REQUEST)
+        .json({
+          message: "Authentication unsuccessful",
+          status: "Bad request",
+        });
+    }
+  }
+
+  async getOrganisation(req: Request, res: Response) {
+    try {
+      const { orgId } = <{ orgId: string }>req.params;
+
+      const organisation = await this.OrganisationService.getOrganisation(orgId);
+
+      res.status(HttpCode.OK).json({ status: 'success', message: 'Fetched organisation successfuly', data: organisation });
     } catch (error) {
       if (error instanceof CustomError)
         return res

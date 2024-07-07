@@ -10,5 +10,6 @@ const orgController = new OrganisatioController(orgService);
 
 route.get('/users/:id', authMid, orgController.getUserProfile.bind(orgController));
 route.get('/organisations', authMid, orgController.getUserOrganisaions.bind(orgController));
+route.get('/organisations/:orgId', authMid, orgController.getOrganisation.bind(orgController));
 
 export default route;

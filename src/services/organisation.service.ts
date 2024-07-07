@@ -42,6 +42,16 @@ class OrganisationService implements IOrganisation {
 
     return organisation;
   }
+
+  async getOrganisation(orgId: string) {
+    const organisation = await prisma.organisation.findUnique({
+      where: { orgId }
+    });
+
+    if (!organisation) throw new CustomError(HttpCode.NOT_FOUND, 'Organisation not found', 'Not Found');
+
+    return organisation;
+  }
 }
 
 export default OrganisationService;
