@@ -6,8 +6,9 @@ dotenv.config({ path: path.resolve(`${__dirname}/../../.env`) });
 const getConfig = (): ENV => {
   return {
     JWT_SECRET: process.env.JWT_SECRET,
-    DB_STRING: process.env.DB_STRING,
-    ENVIRONMENT: process.env.ENVIRONMENT
+    DATABASE_URL: process.env.DATABASE_URL,
+    ENVIRONMENT: process.env.ENVIRONMENT,
+    PORT: process.env.PORT
   };
 };
 
