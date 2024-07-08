@@ -69,9 +69,18 @@ class OrganisationService implements IOrganisation {
   }
 
   async addUserToOrg(userId:string, orgId: string) {
-    const user = await prisma.userOrganisation.findFirst({ where: { userId } });
+    const user = await prisma.user.findFirst({ where: { userId } });
 
-    if (user) throw new CustomError(HttpCode.CONFLICT, 'User is already a member of this organisation', 'Already a member');
+    if (!user) throw new CustomError(HttpCode.NOT_FOUND, 'User not found', 'Not Found');
+
+    const org = await prisma.organisation.findFirst({ where: { orgId } });
+
+    if (!org) throw new CustomError(HttpCode.NOT_FOUND, 'Organisation not found', 'Not Found');
+
+    const userInOrg = await prisma.organisation.findFirst({ where: { orgId, users: { some: { userId } } } });
+
+    if (userInOrg) throw new CustomError(HttpCode.CONFLICT, 'User is already a member of this organisation', 'Already a member');
+
 
     await prisma.userOrganisation.create({
       data: {
